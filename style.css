@@ -1258,7 +1258,7 @@ code {
 }
 
 .space-y-1 > :not([hidden]) ~ :not([hidden]){
-  --tw-space-y-reverse: 0;
+  --tw-space-y
   margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
 }
@@ -2127,6 +2127,128 @@ code {
   opacity: 1;
 }
 
+/* === Mobile fixes: prevent horizontal overflow and improve hero image size === */
+@media (max-width: 640px) {
+  /* Force no horizontal scroll on mobile devices */
+  html, body { overflow-x: hidden !important; }
+
+  /* Reduce padding on hero model card so image becomes more prominent */
+  #home .relative.p-8.shadow-2xl,
+  #home .relative.p-8.shadow-xl,
+  #home .relative.p-8.card {
+    padding: 1rem;
+  }
+
+  /* Use a wider aspect ratio (16:9) for the model preview on small screens */
+  #home .aspect-square {
+    aspect-ratio: 16 / 9;
+  }
+
+  /* Make the hero preview image cover the container (avoid small centered image) */
+  #home .aspect-square img {
+    object-fit: cover !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  /* Cap decorative absolute circle sizes so they don't push layout or cause overflow */
+  #home .absolute.rounded-full,
+  #home > div > .absolute.rounded-full {
+    width: min(40vw, 18rem) !important;
+    height: min(40vw, 18rem) !important;
+  }
+
+  /* Slightly reduce large margins/gaps to avoid extra whitespace on small screens */
+  .container-custom { padding-left: 0.5rem; padding-right: 0.5rem; }
+  .section-padding { padding-left: 0.5rem; padding-right: 0.5rem; }
+}
+
+/* === Contact section mobile fixes === */
+@media (max-width: 640px) {
+  /* Make contact grid single column so form + info stack vertically */
+  #contact .grid.items-stretch { grid-template-columns: 1fr !important; }
+
+  /* Ensure cards are positioned statically and visible */
+  #contact .card { position: relative !important; z-index: 1 !important; overflow: visible !important; }
+
+  /* Prevent the submit button from overlapping other elements */
+  #contact button[type="submit"], #contact .btn-primary { position: relative !important; z-index: 2 !important; }
+
+  /* Reduce large gaps that can push content off-canvas */
+  #contact .grid.items-stretch, #contact .container-custom { gap: 1rem !important; }
+
+  /* Ensure form height behaves naturally on small screens */
+  #contact form.flex.flex-col.h-full { height: auto !important; }
+
+  /* Defensive: remove translate transforms inside contact cards that could move them off-screen */
+  #contact .transform, #contact .-translate-x-1\/2, #contact .-translate-y-1\/2 { transform: none !important; left: auto !important; }
+}
+
+/* Extra small screen fixes: address layout issues when width < 500px */
+@media (max-width: 500px) {
+  /* Tighten container padding so content fits smaller screens */
+  #contact .mx-auto.container-custom {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    max-width: 100% !important;
+  }
+
+  /* Ensure the contact grid stacks and gaps are small */
+  #contact .grid.items-stretch {
+    grid-template-columns: 1fr !important;
+    gap: 0.6rem !important;
+  }
+
+  /* Let form grow naturally and avoid fixed heights; allow children to shrink */
+  #contact form.flex.flex-col.h-full {
+    height: auto !important;
+    min-height: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* Prevent flex children (inputs/selects) from forcing wider minimum widths */
+  #contact form input,
+  #contact form textarea,
+  #contact form select,
+  #contact .card,
+  #contact .flex {
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Make inputs and textarea full width and avoid overflow from padding */
+  #contact form input,
+  #contact form textarea,
+  #contact form select {
+    width: 100% !important;
+    display: block !important;
+  }
+
+  /* Keep submit button full width and avoid overlapping */
+  #contact button[type="submit"],
+  #contact .btn-primary {
+    width: 100% !important;
+    position: relative !important;
+    z-index: 3 !important;
+  }
+
+  /* Remove any remaining transforms or absolute positioning that could push content off-canvas */
+  #contact .transform,
+  #contact .-translate-x-1\/2,
+  #contact .-translate-y-1\/2,
+  #contact .absolute {
+    transform: none !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    position: static !important;
+  }
+
+  /* Ensure no horizontal scrolling inside contact area */
+  #contact { overflow-x: hidden !important; }
+}
+
 @media (min-width: 640px){
   .sm\:flex-row{
     flex-direction: row;
@@ -2225,3 +2347,25 @@ code {
     line-height: 1.75rem;
   }
 }
+
+/* Disable decorative pulsing circles globally */
+.absolute.w-8.h-8.rounded-full.animate-pulse,
+.absolute.w-6.h-6.rounded-full.animate-pulse,
+.absolute.rounded-full.blur-3xl.animate-pulse {
+  display: none !important;
+}
+
+/* Ensure hero model image uses contain on desktop but cover on small screens */
+#home .aspect-square img { object-fit: contain; }
+@media (max-width: 640px) { #home .aspect-square img { object-fit: cover; } }
+
+/* Contact section: ensure cards don't overflow and form fits */
+#contact .card { overflow: visible !important; }
+#contact .mx-auto.container-custom { max-width: 100% !important; padding-left: 1rem !important; padding-right: 1rem !important; }
+#contact .grid.items-stretch { grid-template-columns: 1fr !important; gap: 1rem !important; }
+
+/* Fix submit button width and stacking */
+#contact button[type="submit"] { width: 100% !important; display: block !important; }
+
+/* Small tweak to prevent sticky header overlapping content when jumping */
+:target { scroll-margin-top: 5rem; }

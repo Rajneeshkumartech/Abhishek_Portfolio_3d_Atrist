@@ -52,19 +52,19 @@
         });
 
         // Form Submission
-        const contactForm = document.querySelector('form');
-        contactForm.addEventListener('submit', function(e) {
-            // e.preventDefault();
+        // const contactForm = document.querySelector('form');
+        // contactForm.addEventListener('submit', function(e) {
+        //     // e.preventDefault();
             
-            // Get form data
-            const formData = new FormData(this);
+        //     // Get form data
+        //     const formData = new FormData(this);
             
-            // Show success message (in a real application, you would send this to a server)
-            alert('Thank you for your inquiry! I will get back to you within 24 hours.');
+        //     // Show success message (in a real application, you would send this to a server)
+        //     alert('Thank you for your inquiry! I will get back to you within 24 hours.');
             
-            // Reset form
-            this.reset();
-        });
+        //     // Reset form
+        //     this.reset();
+        // });
 
         // Newsletter Subscription
         const newsletterForm = document.querySelector('.card.bg-gradient-primary');
